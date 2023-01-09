@@ -44,8 +44,8 @@ public class BasicItemController {
         return "/basic/addForm";
     }
 
-    @PostMapping("/add")
-    public String save(@RequestParam String itemName,
+//    @PostMapping("/add")
+    public String addItemV1(@RequestParam String itemName,
                        @RequestParam int price,
                        @RequestParam Integer quantity,
                        Model model) {
@@ -57,6 +57,23 @@ public class BasicItemController {
         itemRepository.save(item);
 
         model.addAttribute("item",item);
+
+        return "/basic/item";
+    }
+
+    @PostMapping("/add")
+    public String addItemV2(@ModelAttribute("item")Item item, Model model) {
+
+//        @ModelAttribute의 역할 1
+//        Item item = new Item();
+//        item.setItemName(itemName);
+//        item.setPrice(price);
+//        item.setQuantity(quantity);
+
+        itemRepository.save(item);
+
+//        @ModelAttribute의 역할 2 (해당 name에 맞게 model에 들어가는 name과 일치시켜 addAttribute해줌) => 자동추가, 생략가능
+//        model.addAttribute("item",item);
 
         return "/basic/item";
     }
