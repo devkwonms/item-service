@@ -83,7 +83,7 @@ public class BasicItemController {
      * model.addAttribute(item); 자동 추가, 생략 가능
      * 생략시 model에 저장되는 name은 클래스명 첫글자만 소문자로 등록 Item -> item
      */
-    @PostMapping("/add")
+//    @PostMapping("/add")
     public String addItemV3(@ModelAttribute Item item, Model model) {
 
         // @ModelAttribute의 ("name") 을 생략하면 그옆의 선언한 객체의 클래스명에서 맨 앞글자를 소문자로 바꾼 이름이 객체로 model에 담기게 됨!)
@@ -97,6 +97,18 @@ public class BasicItemController {
 
 //        @ModelAttribute의 역할 2 (해당 name에 맞게 model에 들어가는 name과 일치시켜 addAttribute해줌) => 자동추가, 생략가능
 //        model.addAttribute("item",item);
+
+        return "/basic/item";
+    }
+    /**
+     * @ModelAttribute 자체 생략 가능
+     * model.addAttribute(item) 자동 추가
+     * => 단순 타입인 경우 => @RequestParam자동적용, 임의로 생성한 객체인 경우 => @ModelAttribute가 적용됨
+     */
+    @PostMapping("/add")
+    public String addItemV4(Item item, Model model) {
+
+        itemRepository.save(item);
 
         return "/basic/item";
     }
