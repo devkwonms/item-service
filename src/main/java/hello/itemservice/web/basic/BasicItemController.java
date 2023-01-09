@@ -23,7 +23,7 @@ public class BasicItemController {
 //    }
 
     @GetMapping
-    public String item(Model model){
+    public String items(Model model){
         List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
         return "basic/items";
@@ -41,7 +41,7 @@ public class BasicItemController {
     @GetMapping("/add")
     public String addForm() {
 
-        return "/basic/addForm";
+        return "basic/addForm";
     }
 
 //    @PostMapping("/add")
@@ -58,7 +58,7 @@ public class BasicItemController {
 
         model.addAttribute("item",item);
 
-        return "/basic/item";
+        return "basic/item";
     }
 
 //    @PostMapping("/add")
@@ -75,7 +75,7 @@ public class BasicItemController {
 //        @ModelAttribute의 역할 2 (해당 name에 맞게 model에 들어가는 name과 일치시켜 addAttribute해줌) => 자동추가, 생략가능
 //        model.addAttribute("item",item);
 
-        return "/basic/item";
+        return "basic/item";
     }
 
     /**
@@ -98,19 +98,42 @@ public class BasicItemController {
 //        @ModelAttribute의 역할 2 (해당 name에 맞게 model에 들어가는 name과 일치시켜 addAttribute해줌) => 자동추가, 생략가능
 //        model.addAttribute("item",item);
 
-        return "/basic/item";
+        return "basic/item";
     }
     /**
      * @ModelAttribute 자체 생략 가능
      * model.addAttribute(item) 자동 추가
      * => 단순 타입인 경우 => @RequestParam자동적용, 임의로 생성한 객체인 경우 => @ModelAttribute가 적용됨
      */
-    @PostMapping("/add")
+//    @PostMapping("/add")
     public String addItemV4(Item item, Model model) {
 
         itemRepository.save(item);
 
-        return "/basic/item";
+        return "basic/item";
+    }
+
+    @PostMapping("/add")
+    public String addItemV5(Item item, Model model) {
+
+        itemRepository.save(item);
+
+        return "redirect:/basic/items/"+item.getId();
+    }
+
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model){
+
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item",item);
+        return "basic/editForm";
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item){
+
+        itemRepository.update(itemId,item);
+        return "redirect:/basic/items/{itemId}";
     }
 
 
